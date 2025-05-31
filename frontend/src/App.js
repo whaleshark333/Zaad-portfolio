@@ -56,6 +56,336 @@ const portfolioItems = [
   }
 ];
 
+// Latest Works data
+const latestWorksData = [
+  { id: 1, title: "Branding", description: "Complete brand identity and visual systems" },
+  { id: 2, title: "Analytics", description: "Data-driven marketing performance insights" },
+  { id: 3, title: "Content", description: "Engaging content for all digital platforms" },
+  { id: 4, title: "Strategy", description: "Comprehensive marketing strategy development" },
+  { id: 5, title: "Creative", description: "Innovative creative campaigns and concepts" },
+  { id: 6, title: "Digital", description: "Digital marketing and online presence optimization" },
+  { id: 7, title: "Social", description: "Social media management and growth strategies" },
+  { id: 8, title: "Video", description: "Video content production and advertising" },
+  { id: 9, title: "Design", description: "Visual design for marketing materials" },
+  { id: 10, title: "Growth", description: "Business growth through strategic marketing" }
+];
+
+// Privacy Policy Component
+const PrivacyPolicy = () => {
+  return (
+    <div className="min-h-screen bg-white py-20 px-6">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-5xl font-bold text-gray-900 mb-8">Privacy Policy</h1>
+        <div className="prose prose-lg max-w-none">
+          <p className="text-gray-600 mb-6 text-lg">Last updated: December 2024</p>
+          
+          <div className="space-y-8">
+            <section>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Information We Collect</h2>
+              <p className="text-gray-700 leading-relaxed">
+                We collect information you provide directly to us, such as when you contact us through our website, 
+                subscribe to our newsletter, or interact with our portfolio content. This may include your name, 
+                email address, phone number, and any messages you send to us.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">How We Use Your Information</h2>
+              <ul className="list-disc list-inside text-gray-700 space-y-2">
+                <li>To respond to your inquiries and provide customer support</li>
+                <li>To improve our website and portfolio presentation</li>
+                <li>To analyze website usage patterns and performance</li>
+                <li>To send you updates about our work (with your consent)</li>
+              </ul>
+            </section>
+
+            <section>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Analytics and Cookies</h2>
+              <p className="text-gray-700 leading-relaxed">
+                We use Google Analytics to understand how visitors interact with our website. This service uses 
+                cookies to collect anonymous information about your visit, including pages viewed, time spent on 
+                the site, and traffic sources. You can opt out of Google Analytics tracking at any time.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Data Security</h2>
+              <p className="text-gray-700 leading-relaxed">
+                We implement appropriate technical and organizational measures to protect your personal information 
+                against unauthorized access, alteration, disclosure, or destruction.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Contact Us</h2>
+              <p className="text-gray-700 leading-relaxed">
+                If you have any questions about this Privacy Policy, please contact us at hello@portfolio.com 
+                or use the contact form on our website.
+              </p>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Admin Panel Component
+const AdminPanel = () => {
+  const [activeTab, setActiveTab] = useState('content');
+  const [logoFile, setLogoFile] = useState(null);
+  const [portfolioItems, setPortfolioItems] = useState([]);
+
+  const handleFileUpload = (event, type) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (type === 'logo') {
+          setLogoFile(e.target.result);
+          localStorage.setItem('customLogo', e.target.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8 px-6">
+      <div className="max-w-6xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+          <div className="bg-black text-white p-6">
+            <h1 className="text-3xl font-bold">Portfolio Admin Panel</h1>
+            <p className="text-gray-300 mt-2">Customize your portfolio content and settings</p>
+          </div>
+
+          <div className="flex border-b">
+            {['content', 'media', 'settings'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-6 py-4 text-sm font-medium capitalize ${
+                  activeTab === tab
+                    ? 'border-b-2 border-black text-black'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          <div className="p-6">
+            {activeTab === 'content' && (
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">Logo Management</h3>
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleFileUpload(e, 'logo')}
+                      className="hidden"
+                      id="logo-upload"
+                    />
+                    <label htmlFor="logo-upload" className="cursor-pointer">
+                      <div className="text-gray-600">
+                        <div className="text-4xl mb-2">📷</div>
+                        <p>Click to upload new logo</p>
+                        <p className="text-sm text-gray-500 mt-1">PNG, JPG up to 2MB</p>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">Portfolio Items</h3>
+                  <div className="space-y-4">
+                    <button className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors">
+                      Add New Portfolio Item
+                    </button>
+                    <div className="grid gap-4">
+                      <div className="border rounded-lg p-4">
+                        <h4 className="font-semibold">Sample Portfolio Item</h4>
+                        <p className="text-gray-600 text-sm">Click to edit content, upload new images, or modify details</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'media' && (
+              <div className="space-y-6">
+                <h3 className="text-xl font-bold text-gray-900">Media Library</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
+                    <span className="text-gray-400 text-4xl">+</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'settings' && (
+              <div className="space-y-6">
+                <h3 className="text-xl font-bold text-gray-900">Site Settings</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Site Title
+                    </label>
+                    <input
+                      type="text"
+                      defaultValue="Marketing Portfolio"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Contact Email
+                    </label>
+                    <input
+                      type="email"
+                      defaultValue="hello@portfolio.com"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Latest Works Item Component
+const LatestWorkItem = ({ work, onClick }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const itemRef = useRef();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (itemRef.current) {
+      observer.observe(itemRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={itemRef}
+      onClick={() => onClick(work)}
+      className={`latest-work-item bg-white rounded-lg shadow-md hover:shadow-xl p-6 cursor-pointer transition-all duration-500 transform ${
+        isVisible 
+          ? 'translate-y-0 opacity-100 scale-100' 
+          : 'translate-y-4 opacity-0 scale-95'
+      } hover:scale-105`}
+    >
+      <h4 className="font-bold text-gray-900 text-lg mb-2">{work.title}</h4>
+      <p className="text-gray-600 text-sm">{work.description}</p>
+    </div>
+  );
+};
+
+// Latest Works Section Component
+const LatestWorksSection = () => {
+  const [selectedWork, setSelectedWork] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const handleWorkClick = (work) => {
+    setSelectedWork(work);
+  };
+
+  const closeModal = () => {
+    setSelectedWork(null);
+  };
+
+  return (
+    <section 
+      ref={sectionRef}
+      className={`py-20 bg-gray-50 transition-all duration-1000 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+    >
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <h2 className="text-5xl font-bold text-gray-900 mb-6">Latest Works</h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Explore our most recent marketing projects and creative solutions
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+          {latestWorksData.map((work, index) => (
+            <LatestWorkItem 
+              key={work.id} 
+              work={work} 
+              onClick={handleWorkClick}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Modal for work details */}
+      {selectedWork && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl p-8 max-w-md mx-4 shadow-2xl transform animate-pulse">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-2xl font-bold text-gray-900">{selectedWork.title}</h3>
+              <button 
+                onClick={closeModal}
+                className="text-gray-500 hover:text-gray-700 text-2xl"
+              >
+                ×
+              </button>
+            </div>
+            <p className="text-gray-600 mb-6 leading-relaxed">
+              {selectedWork.description}
+            </p>
+            <div className="text-center">
+              <button 
+                onClick={closeModal}
+                className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors duration-300"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+};
+
 // Animated Portfolio Item Component
 const PortfolioItem = ({ item, index }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -127,6 +457,13 @@ const PortfolioItem = ({ item, index }) => {
 // Contact Section Component
 const ContactSection = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
   const sectionRef = useRef();
 
   useEffect(() => {
@@ -145,6 +482,30 @@ const ContactSection = () => {
 
     return () => observer.disconnect();
   }, []);
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitMessage('');
+
+    try {
+      // Simulate form submission
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setSubmitMessage('Thank you! Your message has been sent successfully.');
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      setSubmitMessage('Sorry, there was an error sending your message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section 
@@ -188,9 +549,52 @@ const ContactSection = () => {
           </div>
         </div>
 
-        <button className="bg-black text-white px-8 py-4 rounded-full font-semibold hover:bg-gray-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
-          Start a Conversation
-        </button>
+        {/* Contact Form */}
+        <div className="max-w-md mx-auto">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              type="text"
+              name="name"
+              placeholder="Your Name"
+              value={formData.name}
+              onChange={handleInputChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Your Email"
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+            />
+            <textarea
+              name="message"
+              placeholder="Your Message"
+              value={formData.message}
+              onChange={handleInputChange}
+              required
+              rows="4"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+            ></textarea>
+            
+            <button 
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-black text-white px-8 py-4 rounded-lg font-semibold hover:bg-gray-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? 'Sending...' : 'Start a Conversation'}
+            </button>
+
+            {submitMessage && (
+              <p className={`text-center ${submitMessage.includes('error') ? 'text-red-600' : 'text-green-600'}`}>
+                {submitMessage}
+              </p>
+            )}
+          </form>
+        </div>
       </div>
     </section>
   );
@@ -254,10 +658,26 @@ const Home = () => {
         </div>
 
         <div className="relative z-10 text-center px-6 max-w-6xl mx-auto">
+          {/* Logo Section */}
+          <div className="mb-8">
+            <div className="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden shadow-lg">
+              <img 
+                src="https://images.unsplash.com/photo-1694878982147-e52097b660ec" 
+                alt="Portfolio Logo" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+
           <div className="space-y-8 animate-fade-in">
-            <h1 className="text-7xl md:text-9xl font-bold text-gray-900 tracking-tight leading-none">
-              Portfolio
-            </h1>
+            <div>
+              <h1 className="text-5xl md:text-7xl font-bold text-gray-600 tracking-tight leading-none mb-4">
+                Marketing
+              </h1>
+              <h1 className="text-7xl md:text-9xl font-bold text-gray-900 tracking-tight leading-none">
+                Portfolio
+              </h1>
+            </div>
             
             <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Creative marketing campaigns that drive engagement, 
@@ -265,18 +685,38 @@ const Home = () => {
             </p>
 
             <div className="flex items-center justify-center space-x-12 text-sm text-gray-500 uppercase tracking-wider">
-              <span>Social Media</span>
-              <div className="w-px h-6 bg-gray-300"></div>
-              <span>Video Ads</span>
-              <div className="w-px h-6 bg-gray-300"></div>
-              <span>Brand Strategy</span>
-            </div>
-          </div>
-
-          {/* Scroll Indicator */}
-          <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
-              <div className="w-1 h-3 bg-gray-400 rounded-full mt-2 animate-pulse"></div>
+              <div className="text-center">
+                <div className="w-16 h-16 mx-auto mb-2 rounded-lg overflow-hidden shadow-md">
+                  <img 
+                    src="https://images.pexels.com/photos/267350/pexels-photo-267350.jpeg" 
+                    alt="Social Media" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <span>Social Media</span>
+              </div>
+              <div className="w-px h-20 bg-gray-300"></div>
+              <div className="text-center">
+                <div className="w-16 h-16 mx-auto mb-2 rounded-lg overflow-hidden shadow-md">
+                  <img 
+                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f" 
+                    alt="Video Ads" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <span>Video Ads</span>
+              </div>
+              <div className="w-px h-20 bg-gray-300"></div>
+              <div className="text-center">
+                <div className="w-16 h-16 mx-auto mb-2 rounded-lg overflow-hidden shadow-md">
+                  <img 
+                    src="https://images.unsplash.com/photo-1593062096033-9a26b09da705" 
+                    alt="Brand Strategy" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <span>Brand Strategy</span>
+              </div>
             </div>
           </div>
         </div>
@@ -301,13 +741,16 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Latest Works Section */}
+      <LatestWorksSection />
+
       {/* Contact Section */}
       <ContactSection />
 
       {/* Footer */}
       <footer className="bg-black text-white py-12">
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <h3 className="text-3xl font-bold mb-4">Portfolio</h3>
+          <h3 className="text-3xl font-bold mb-4">2025 Portfolio</h3>
           <p className="text-gray-400 mb-8">Creating impactful marketing experiences</p>
           
           <div className="flex justify-center space-x-8 mb-8">
@@ -319,8 +762,8 @@ const Home = () => {
           
           <div className="border-t border-gray-800 pt-8">
             <p className="text-gray-500 text-sm">
-              © 2024 Portfolio. All rights reserved. | 
-              <button className="ml-2 hover:text-white transition-colors duration-300">Privacy Policy</button>
+              © 2025 Portfolio. All rights reserved. | 
+              <a href="/privacy-policy" className="ml-2 hover:text-white transition-colors duration-300">Privacy Policy</a>
             </p>
           </div>
         </div>
@@ -351,6 +794,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         </Routes>
       </BrowserRouter>
     </div>
